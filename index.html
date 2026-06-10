@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-видео и разработка — портфолио</title>
+<meta name="description" content="Генерация кинематографичных AI-видео по ТЗ и референсам. Telegram-боты, сайты и автоматизация с использованием Claude Code.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0F1316;          /* тёмная кабина */
+    --raise:#151B21;       /* карточки */
+    --ink:#EAE5D9;         /* тёплый светлый текст */
+    --muted:#939C96;
+    --accent:#5BA793;      /* бирюза приборной панели Ми-8 */
+    --amber:#D9A04C;       /* янтарь стрелок приборов */
+    --line:rgba(234,229,217,.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Onest','Inter',system-ui,-apple-system,sans-serif;
+    font-size:17px;line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:0 22px}
+  a{color:var(--accent)}
+  a:focus-visible,button:focus-visible,video:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:4px}
+  ::selection{background:var(--accent);color:#0F1316}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:84px 0 0}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.22em;
+    color:var(--accent);text-transform:uppercase;margin-bottom:22px;
+  }
+  h1{
+    font-family:'Russo One',sans-serif;font-weight:400;
+    font-size:clamp(30px,5.4vw,52px);line-height:1.16;letter-spacing:.01em;
+    max-width:17ch;
+  }
+  h1 .dim{color:var(--muted)}
+  .lede{margin-top:22px;max-width:58ch;color:var(--muted);font-size:18px}
+  .lede strong{color:var(--ink);font-weight:500}
+
+  /* шлейка-«хлопушка» с реальными параметрами сдачи */
+  .slate{
+    margin-top:46px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:13px 0;display:flex;flex-wrap:wrap;gap:8px 0;align-items:center;
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.14em;
+    color:var(--muted);text-transform:uppercase;
+  }
+  .slate span{white-space:nowrap}
+  .slate .tick{color:var(--amber);margin:0 14px}
+
+  /* ---------- СЕКЦИИ ---------- */
+  section{padding:74px 0 0}
+  .sec-eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.22em;
+    color:var(--accent);text-transform:uppercase;
+  }
+  h2{
+    font-family:'Russo One',sans-serif;font-weight:400;
+    font-size:clamp(23px,3.4vw,31px);margin-top:12px;letter-spacing:.01em;
+  }
+  .sec-note{margin-top:14px;color:var(--muted);max-width:62ch}
+
+  /* ---------- КАДРЫ ---------- */
+  .shot{
+    margin-top:38px;background:var(--raise);
+    border:1px solid var(--line);border-radius:10px;overflow:hidden;
+  }
+  .shot-head{
+    display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+    padding:14px 18px 0;
+    font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.16em;
+  }
+  .shot-tag{color:var(--amber)}
+  .shot-tc{color:var(--muted)}
+  .shot-brief{
+    padding:10px 18px 16px;color:var(--ink);font-size:16px;line-height:1.6;
+  }
+  .shot-brief b{
+    display:block;font-family:'JetBrains Mono',monospace;font-weight:400;
+    font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+    margin-bottom:5px;
+  }
+  .shot video{display:block;width:100%;height:auto;background:#000;border-top:1px solid var(--line)}
+
+  /* ---------- УСЛУГИ ---------- */
+  .panels{margin-top:36px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .panel{
+    background:var(--raise);border:1px solid var(--line);border-radius:10px;padding:26px 24px;
+  }
+  .panel h3{
+    font-family:'Russo One',sans-serif;font-weight:400;font-size:19px;letter-spacing:.02em;
+  }
+  .panel h3::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;
+    background:var(--accent);margin-right:11px;vertical-align:2px}
+  .panel ul{list-style:none;margin-top:16px}
+  .panel li{
+    padding:9px 0;border-top:1px solid var(--line);color:var(--muted);font-size:16px;
+  }
+  .panel li:first-child{border-top:0}
+  .panel li strong{color:var(--ink);font-weight:500}
+  .panel .foot{
+    margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12.5px;
+    letter-spacing:.1em;color:var(--accent);
+  }
+
+  /* ---------- ПРОЦЕСС ---------- */
+  .steps{margin-top:30px;border-left:2px solid var(--accent);padding-left:26px;max-width:62ch}
+  .steps p{padding:11px 0;border-bottom:1px solid var(--line);color:var(--muted)}
+  .steps p:last-child{border-bottom:0}
+  .steps strong{color:var(--ink);font-weight:500}
+
+  /* ---------- КОНТАКТЫ ---------- */
+  .cta{padding:84px 0 70px;text-align:left}
+  .cta h2{font-size:clamp(26px,4.4vw,40px);max-width:18ch}
+  .cta p{margin-top:16px;color:var(--muted);max-width:54ch}
+  .btns{margin-top:32px;display:flex;flex-wrap:wrap;gap:14px}
+  .btn{
+    display:inline-block;padding:13px 26px;border-radius:8px;text-decoration:none;
+    font-family:'Russo One',sans-serif;font-size:15px;letter-spacing:.05em;
+    transition:transform .15s ease,background .15s ease;
+  }
+  .btn:hover{transform:translateY(-2px)}
+  .btn-solid{background:var(--accent);color:#0F1316}
+  .btn-line{border:1px solid var(--line);color:var(--ink)}
+  .btn-line:hover{border-color:var(--accent)}
+  .sig{
+    margin-top:46px;padding-top:18px;border-top:1px solid var(--line);
+    font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.12em;color:var(--muted);
+  }
+
+  /* появление героя */
+  .hero > *{opacity:0;transform:translateY(10px);animation:rise .6s ease forwards}
+  .hero > *:nth-child(2){animation-delay:.08s}
+  .hero > *:nth-child(3){animation-delay:.16s}
+  .hero > *:nth-child(4){animation-delay:.24s}
+  @keyframes rise{to{opacity:1;transform:none}}
+
+  @media (max-width:680px){
+    .panels{grid-template-columns:1fr}
+    .slate .tick{margin:0 9px}
+    section{padding:58px 0 0}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none!important;transition:none!important}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero wrap">
+  <p class="eyebrow">AI-продакшн · AI-разработка</p>
+  <h1>Кадры — нейросетями.<br>Боты и сайты — <span class="dim">под ключ.</span></h1>
+  <p class="lede">Генерирую <strong>кинематографичное видео</strong> по вашему ТЗ и референсам
+  и разрабатываю <strong>Telegram-ботов, сайты и автоматизацию</strong> с использованием Claude Code.</p>
+  <div class="slate" aria-label="Параметры сдачи">
+    <span>Full HD 1920×1080</span><span class="tick">●</span>
+    <span>24 fps</span><span class="tick">●</span>
+    <span>по референсам</span><span class="tick">●</span>
+    <span>правки в рамках ТЗ</span>
+  </div>
+</header>
+
+<section class="wrap" id="shots">
+  <p class="sec-eyebrow">Портфолио</p>
+  <h2>Выполненный коммерческий заказ</h2>
+  <p class="sec-note">Три кадра для видеопроизводства. Над каждым роликом — задача,
+  как её сформулировал заказчик; ниже — сданный результат.</p>
+
+  <article class="shot">
+    <div class="shot-head"><span class="shot-tag">КАДР 01</span><span class="shot-tc">00:08 · 1920×1080</span></div>
+    <p class="shot-brief"><b>ТЗ заказчика</b>«Вид из кабины вертолёта Ми-8: полёт над рекой, вокруг тайга, уровень детализации — высокий».</p>
+    <video controls preload="metadata" playsinline poster="posters/heli-cockpit.jpg">
+      <source src="videos/heli-cockpit.mp4" type="video/mp4">
+    </video>
+  </article>
+
+  <article class="shot">
+    <div class="shot-head"><span class="shot-tag">КАДР 02</span><span class="shot-tc">00:10 · 1920×1080</span></div>
+    <p class="shot-brief"><b>ТЗ заказчика</b>«Вид с берега реки: Ми-8 летит над водой, внезапно что-то происходит — и вертолёт падает на тот же берег».</p>
+    <video controls preload="metadata" playsinline poster="posters/heli-crash.jpg">
+      <source src="videos/heli-crash.mp4" type="video/mp4">
+    </video>
+  </article>
+
+  <article class="shot">
+    <div class="shot-head"><span class="shot-tag">КАДР 03</span><span class="shot-tc">00:12 · 1920×1080</span></div>
+    <p class="shot-brief"><b>ТЗ заказчика</b>«Оживить куклу по фотографиям: страшный сон главной героини. Чёрный фон, кукла делает несколько шагов, улыбается, атмосфера мистики и ужаса».</p>
+    <video controls preload="metadata" playsinline poster="posters/doll.jpg">
+      <source src="videos/doll.mp4" type="video/mp4">
+    </video>
+  </article>
+</section>
+
+<section class="wrap" id="services">
+  <p class="sec-eyebrow">Услуги</p>
+  <h2>Что я делаю</h2>
+  <div class="panels">
+    <div class="panel">
+      <h3>AI-видео и контент</h3>
+      <ul>
+        <li><strong>Сцены и кадры</strong> для кино, клипов и рекламы</li>
+        <li><strong>Оживление фотографий</strong> — статика становится видео</li>
+        <li><strong>Атмосферные ролики</strong> по референсам и описанию</li>
+        <li><strong>Изображения</strong> под обложки, постеры, креативы</li>
+      </ul>
+      <p class="foot">Full HD · итерации до приёмки</p>
+    </div>
+    <div class="panel">
+      <h3>Разработка</h3>
+      <ul>
+        <li><strong>Telegram-боты</strong> любой логики</li>
+        <li><strong>Сайты и лендинги</strong> — от макета до публикации</li>
+        <li><strong>Парсеры и автоматизация</strong> рутинных задач</li>
+        <li><strong>Интеграция нейросетей</strong> (Claude, ChatGPT) в процессы</li>
+      </ul>
+      <p class="foot">Разработка с использованием Claude Code</p>
+    </div>
+  </div>
+
+  <!-- ✏️ ШАБЛОН НА БУДУЩЕЕ: когда появится живой бот или сайт-демо,
+       раскомментируй блок ниже и подставь свои ссылки. -->
+  <!--
+  <div class="panels" style="margin-top:18px">
+    <div class="panel">
+      <h3>Демо: Telegram-бот</h3>
+      <ul>
+        <li>Что делает бот — одной строкой</li>
+        <li><a href="https://t.me/ИМЯ_БОТА">Открыть бота →</a></li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Демо: лендинг</h3>
+      <ul>
+        <li>Для кого и про что — одной строкой</li>
+        <li><a href="https://ссылка-на-демо">Открыть сайт →</a></li>
+      </ul>
+    </div>
+  </div>
+  -->
+</section>
+
+<section class="wrap" id="process">
+  <p class="sec-eyebrow">Процесс</p>
+  <h2>Как я работаю</h2>
+  <div class="steps">
+    <p><strong>Уточняю детали до старта,</strong> чтобы попасть в ожидания с первой итерации.</p>
+    <p><strong>Показываю промежуточный результат</strong> — вы видите направление до сдачи.</p>
+    <p><strong>Правки в рамках ТЗ</strong> — без споров.</p>
+    <p><strong>Говорю честно,</strong> если задача не моя, — сразу, а не за день до дедлайна.</p>
+  </div>
+</section>
+
+<footer class="cta wrap" id="contact">
+  <p class="sec-eyebrow">Контакты</p>
+  <h2>Опишите задачу — отвечу, что получится, в какой срок и за сколько.</h2>
+  <div class="btns">
+    <!-- ✏️ ЗАМЕНИ: вставь ссылку на свой профиль Kwork -->
+    <a class="btn btn-solid" href="https://kwork.ru/user/ТВОЙ_ЛОГИН">Заказать на Kwork</a>
+    <!-- ✏️ ЗАМЕНИ: вставь свой ник в Telegram -->
+    <a class="btn btn-line" href="https://t.me/ТВОЙ_НИК">Написать в Telegram</a>
+  </div>
+  <!-- ✏️ ЗАМЕНИ: впиши имя -->
+  <p class="sig">ИМЯ ФАМИЛИЯ · AI-видео и разработка</p>
+</footer>
+
+<script>
+  // Когда запускается один ролик — остальные ставятся на паузу
+  const vids = document.querySelectorAll('video');
+  vids.forEach(v => v.addEventListener('play', () => {
+    vids.forEach(o => { if (o !== v) o.pause(); });
+  }));
+</script>
+</body>
+</html>
